@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(1, 'ae')
+
 from constantes import *
 from principal import ae
 from math import sqrt, log10
