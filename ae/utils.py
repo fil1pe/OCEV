@@ -6,7 +6,7 @@ def swap(lista, a, b):
     lista[b] = temp
 
 def copia_populacao(populacao):
-    return [individuo[:] for individuo in populacao]
+    return [individuo.copia() for individuo in populacao]
 
 def media(lista):
     return sum(lista)/len(lista)

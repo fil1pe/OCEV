@@ -8,10 +8,10 @@ def selecao_roleta(populacao, fitness, tamanho):
     posicao = []
     soma_fitness = 0
     for individuo in populacao:
-        soma_fitness += fitness(individuo)
+        soma_fitness += individuo.fitness
     aux = 0
     for individuo in populacao:
-        aux += fitness(individuo)/soma_fitness
+        aux += individuo.fitness/soma_fitness
         posicao.append(aux)
 
     aux = 0
@@ -19,7 +19,7 @@ def selecao_roleta(populacao, fitness, tamanho):
         prob = random()
         for i in range(len(populacao)):
             if posicao[i] >= prob:
-                selecionados.append(populacao[i][:])
+                selecionados.append(populacao[i].copia())
                 aux += 1
                 break
     
@@ -33,15 +33,15 @@ def selecao_torneio(populacao, fitness, tamanho, k, kp):
         aux = copia_populacao(populacao)
         k_aleatorios = []
         l = len(aux)
-        for i in range(k):
+        for _ in range(k):
             ind = randint(0, l-1)
             k_aleatorios.append(aux[ind])
             aux.pop(ind)
             l -= 1
         if random() <= kp:
-            selecionados.append(max(k_aleatorios, key=lambda x : fitness(x)))
+            selecionados.append(max(k_aleatorios, key=lambda x : x.fitness))
         else:
-            selecionados.append(min(k_aleatorios, key=lambda x : fitness(x)))
+            selecionados.append(min(k_aleatorios, key=lambda x : x.fitness))
         t += 1
     
     return selecionados

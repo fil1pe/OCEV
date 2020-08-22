@@ -1,8 +1,12 @@
 from constantes import *
+from individuo import Individuo
 from utils import copia_populacao
 from random import randint, random
 
 def pmx(mae, pai):
+    mae = mae.cromossomo
+    pai = pai.cromossomo
+
     filho = [0 for _ in range(len(mae))]
     filho_map = [False for _ in range(len(filho))]
 
@@ -30,7 +34,7 @@ def pmx(mae, pai):
         filho[v_ind] = pai[i]
         filho_map[v_ind] = True
     
-    return filho
+    return Individuo(filho)
 
 def crossover(populacao, tamanho, probabilidade, tipo):
     nova_populacao = []
