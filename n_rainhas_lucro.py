@@ -1,13 +1,12 @@
 import sys
 sys.path.insert(1, 'ae')
-
 from constantes import *
-from principal import ae
+from principal import inicializa
+
 from math import sqrt, log10
+from tkinter import Canvas
 
-from pprint import pprint
-
-DIM = 128
+DIM = 32
 
 RUN = 10
 GEN = 1000
@@ -17,6 +16,23 @@ PC = 0.85
 PM = 1/DIM
 K = 6
 KP = 1
+
+def tabuleiro(frame, individuo):
+    cromossomo = individuo.cromossomo
+    canvas = Canvas(frame, width=frame['width'], height=frame['height'])
+    size = frame['width']/DIM
+    for i in range(DIM):
+        for j in range(DIM):
+            if j % 2 == i % 2:
+                cor = '#000'
+            else:
+                cor = '#fff'
+            canvas.create_rectangle(i*size, j*size, (i+1)*size, (j+1)*size, fill=cor, outline='')
+    cor = '#ffa200'
+    for i in range(DIM):
+        j = cromossomo[i]
+        canvas.create_rectangle(i*size, j*size, (i+1)*size, (j+1)*size, fill=cor, outline='')
+    canvas.pack()
 
 def colisoes(cromossomo):
     dimensao = len(cromossomo)
@@ -49,4 +65,4 @@ def fitness(cromossomo):
     return FO + r*H
 
 if __name__ == "__main__":
-    ae(fitness, lucro, colisoes, COD, RUN, GEN, POP, DIM, PC, PM, TORNEIO, K, KP)
+    inicializa(fitness, lucro, colisoes, COD, RUN, GEN, POP, DIM, PC, PM, TORNEIO, K, KP, True, tabuleiro)
