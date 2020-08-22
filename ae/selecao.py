@@ -2,7 +2,7 @@ from constantes import *
 from utils import copia_populacao
 from random import random, randint
 
-def selecao_roleta(populacao, fitness, tamanho):
+def selecao_roleta(populacao, tamanho):
     selecionados = []
 
     posicao = []
@@ -25,7 +25,7 @@ def selecao_roleta(populacao, fitness, tamanho):
     
     return selecionados
 
-def selecao_torneio(populacao, fitness, tamanho, k, kp):
+def selecao_torneio(populacao, tamanho, k, kp):
     selecionados = []
 
     t = 0
@@ -46,8 +46,8 @@ def selecao_torneio(populacao, fitness, tamanho, k, kp):
     
     return selecionados
 
-def selecao(populacao, fitness, tamanho, tipo, arg1=0, arg2=0):
+def selecao(populacao, tamanho, tipo, arg1=0, arg2=0):
     if tipo == ROLETA:
-        return selecao_roleta(populacao, fitness, tamanho)
+        return selecao_roleta(populacao, tamanho)
     elif tipo == TORNEIO:
-        return selecao_torneio(populacao, fitness, tamanho, arg1, arg2)
+        return selecao_torneio(populacao, tamanho, arg1, arg2)
