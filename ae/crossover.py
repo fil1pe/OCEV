@@ -3,6 +3,14 @@ from individuo import Individuo
 from utils import copia_populacao
 from random import randint, random
 
+def um_ponto(mae, pai):
+    mae = mae.cromossomo
+    pai = pai.cromossomo
+
+    ponto = randint(0, len(mae))
+
+    return Individuo(mae[:ponto] + pai[ponto:]), Individuo(pai[:ponto] + mae[ponto:])
+
 def pmx(mae, pai):
     mae = mae.cromossomo
     pai = pai.cromossomo
@@ -53,7 +61,9 @@ def crossover(populacao, tamanho, probabilidade, tipo):
         aux -= 2
 
         if random() < probabilidade:
-            if tipo == PMX:
+            if tipo == UM_PONTO:
+                filho1, filho2 = um_ponto(mae, pai)
+            elif tipo == PMX:
                 filho1 = pmx(mae, pai)
                 filho2 = pmx(pai, mae)
         else:

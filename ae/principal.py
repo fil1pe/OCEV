@@ -92,7 +92,9 @@ class Janela:
         self.desenho(self.desenho_container, individuo)
 
     def evolucao(self):
-        if self.codificacao == INT_PERM:
+        if self.codificacao == BIN:
+            tipo_crossover = UM_PONTO
+        elif self.codificacao == INT_PERM:
             tipo_crossover = PMX
 
         plot_data = [[0 for _ in range(self.geracoes)] for _ in range(3)]

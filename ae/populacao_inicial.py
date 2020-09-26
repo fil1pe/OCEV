@@ -4,7 +4,11 @@ from random import randint
 
 def individuo_aleatorio(tipo, dimensao):
     cromossomo = []
-    if tipo == INT_PERM:
+    if tipo == BIN:
+        while dimensao > 0:
+            cromossomo.append(randint(0, 1))
+            dimensao -= 1
+    elif tipo == INT_PERM:
         aux = [i for i in range(dimensao)]
         l = len(aux)
         while l > 0:

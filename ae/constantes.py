@@ -1,9 +1,11 @@
 # Codificações:
-INT_PERM = 2
+BIN = 0
+INT_PERM = 1
 
 # Métodos de solução:
 ROLETA = 0
 TORNEIO = 1
 
 # Métodos de crossover:
-PMX = 3
+UM_PONTO = 0
+PMX = 1
