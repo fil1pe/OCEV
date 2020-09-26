@@ -1,17 +1,35 @@
 from constantes import *
+from individuo import Individuo
 from utils import copia_populacao
 from random import random, randint
+
+def roletaCtes(populacao):
+    fmin = min(populacao, key=lambda x: x.fitness)
+    fmax = max(populacao, key=lambda x: x.fitness)
+    favg = sum([i.fitness for i in populacao])/len(populacao)
+    if fmin > (Individuo.roletaC*favg - fmax) / (Individuo.roletaC - 1):
+        alfa = (favg * (Individuo.roletaC-1)) / (fmax - favg)
+        beta = (favg * (fmax - Individuo.roletaC*favg)) / (fmax - favg)
+    else:
+        alfa = favg / (favg - fmin)
+        beta = (-fmin * favg) / (favg - fmin)
+    return alfa, beta
 
 def selecao_roleta(populacao, tamanho):
     selecionados = []
 
+    alfa, beta = roletaCtes(populacao)
+
+    for i in populacao:
+        i.roletaFitness = alfa*i.fitness + beta
+
     posicao = []
     soma_fitness = 0
     for individuo in populacao:
-        soma_fitness += individuo.fitness
+        soma_fitness += individuo.roletaFitness
     aux = 0
     for individuo in populacao:
-        aux += individuo.fitness/soma_fitness
+        aux += individuo.roletaFitness/soma_fitness
         posicao.append(aux)
 
     aux = 0

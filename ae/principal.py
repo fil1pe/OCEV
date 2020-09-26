@@ -13,8 +13,11 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationTool
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
+from random import randint, shuffle
+from math import floor
+
 class Janela:
-    def __init__(self, root, fitness, objetivo, penalidade, codificacao, execucoes, geracoes, tam_populacao, dimensao, prob_crossover, prob_mutacao, selecao, sel_arg0, sel_arg1, elitismo, desenho):
+    def __init__(self, root, fitness, objetivo, penalidade, codificacao, execucoes, geracoes, tam_populacao, dimensao, prob_crossover, prob_mutacao, selecao, sel_arg0, sel_arg1, elitismo, desenho, generation_gap=False):
         Individuo.fitness = fitness
         self.objetivo = objetivo
         self.penalidade = penalidade
@@ -30,6 +33,7 @@ class Janela:
         self.sel_arg1 = sel_arg1
         self.elitismo = elitismo
         self.desenho = desenho
+        self.generation_gap = generation_gap
 
         self.root = root
         tk.Tk.wm_title(root, 'Algoritmo evolucionário')
@@ -41,7 +45,7 @@ class Janela:
         container = tk.Frame(container_pai)
         container.pack(side='top')
 
-        f = Figure(figsize=(6, 4), constrained_layout=True)#figsize=(6,3), dpi=100)
+        f = Figure(figsize=(6, 4), constrained_layout=True)
         self.subplot = f.add_subplot(111)
 
         self.subplot.set_xlim((0, self.geracoes))
@@ -107,7 +111,18 @@ class Janela:
         for i in range(self.execucoes):
             populacao = populacao_inicial(self.codificacao, self.tam_populacao, self.dimensao)
 
+            # Escalonamento linear
+            c = 1.2
+
             for j in range(self.geracoes):
+                # Escalonamento linear
+                delta_c = j/self.geracoes
+                if delta_c > 0.8:
+                    c = 2.0
+                else:
+                    c = 1.2 + delta_c
+                Individuo.roletaC = c
+
                 self.progress_bar[0]['value'] = j/self.geracoes * 100
                 self.root.update_idletasks()
 
@@ -115,7 +130,7 @@ class Janela:
                     melhor_populacao = max(populacao, key=lambda x : x.fitness)
                     populacao.remove(melhor_populacao)
                     self.tam_populacao -= 1
-                
+
                 populacao = selecao(populacao, self.tam_populacao, self.selecao, self.sel_arg0, self.sel_arg1)
                 populacao += crossover(populacao, self.tam_populacao, self.prob_crossover, tipo_crossover)
                 populacao = mutacao(populacao, self.prob_mutacao, self.codificacao)
